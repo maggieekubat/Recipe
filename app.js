@@ -7,6 +7,9 @@ app.use(logger)
 app.use('/recipe', express.static('public/recipe'))
 app.use(express.static('public'))
 
+// Make a List here with recipes so that a user can
+// look up mushroom rice without typing the .html
+
 app.get('/', (request, response) => {
     response.send('Welcome to my 🍪 Cookieshop!')
 })
