@@ -1,0 +1,59 @@
+
+.links-box h3 {
+    padding: 0rem 10% 1rem;
+}
+
+.links-box {
+    width: 30%;
+    padding: 1.5rem;
+    margin-right: 2rem;
+    border: solid;
+    border-color: rgb(35, 35, 35);
+    border-radius: 5px;
+    background-color: rgb(35, 35, 35);
+}
+
+.about-text {
+    width: 45%;
+    padding: 1.5rem;
+    border: solid;
+    border-color: rgb(35, 35, 35);
+    border-radius: 5px;
+    background-color: rgb(35, 35, 35);
+}
+
+.main-box {
+    display: flex;
+    padding: 0rem 3rem 0rem 3rem;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+
+@media (max-width: 600px) {
+    .main-box {
+        flex-direction: column-reverse;
+        align-items: normal;
+        padding: 1%;
+    }
+
+    .about-text {
+        width: 80%;
+        margin-bottom: 1rem;
+        margin-right: 5rem;
+    }
+
+    .links_box {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .about-text {
+        font-size: x-large;
+    }
+
+    .links-box {
+        font-size: x-large;
+    }
+}

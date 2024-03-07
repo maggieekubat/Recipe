@@ -1,0 +1,151 @@
+
+html {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #000000ec;
+    color: white;
+}
+
+/* NAVIGATION BAR*/
+nav {
+    /*position: sticky;
+    top: 0;
+    Nav bar stays on top even if you scroll*/
+    background-color: #000000;
+    border-bottom: 1px solid;
+    border-radius: 1px;
+    border-color: rgb(35, 35, 35);
+    margin-bottom: 2rem;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: rgb(220, 20, 60);
+    display: block;
+    padding: 1rem;
+}
+
+/* Button Effects */
+.button:hover{
+    background-color: rgb(110, 105, 105);
+    cursor: pointer;
+}
+
+
+/* General Heading */
+.heading {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    padding-bottom: 1rem;
+}
+
+
+/* Home Page */
+.recipe-list {
+    display: inline;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    border: 1px solid;
+    background-color: rgb(182, 42, 65);
+    color: rgb(255, 192, 203);
+    margin: 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.recipe-list:hover {
+    background-color: rgb(114, 28, 42);
+    cursor: pointer;
+}
+
+@media (min-width: 1000px) {
+    .home-heading {
+        background-color: rgb(43, 2, 47);
+    }
+
+    .recipe-list {
+        font-size: x-large;
+    }
+}
+
+@media (max-width: 500px) {
+    .home-heading {
+        padding-bottom: 4rem;
+    }
+
+    .recipe-list {
+        color: black;
+    }
+}
+
+/* Admin Log in Page */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+@media (min-width: 1100px) {
+    .admin-heading {
+        font-size: 64px;
+        color: aqua;
+    }
+
+    .label {
+        font-size: 32px;
+    }
+
+    .input {
+        width: 300px;
+        height: 40px;
+        font-size: 30px;
+    }
+
+    .button {
+        width: 80px;
+        height: 30px;
+        font-size: large;
+    }
+}
+
+@media (min-width: 1400px) {
+    .admin-heading {
+        font-size: 128px;
+        color: rgb(63, 186, 104);
+    }
+
+    .label {
+        font-size: 64px;
+    }
+
+    .input {
+        width: 600px;
+        height: 80px;
+        font-size: 60px;
+    }
+
+    .button {
+        width: 160px;
+        height: 60px;
+        font-size: x-large;
+    }
+}
+
+@media (max-width:700px) {
+    .recipe-head {
+        color: rgb(169, 25, 169);
+    }
+}
+
+@media (min-width:1350px) {
+    .recipe-head {
+        color: rgb(212, 247, 38);
+    }
+}
