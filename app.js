@@ -1,9 +1,11 @@
 import express from 'express'
-import { logger } from './middleware/logger.js'
+import { logger } from './middlewares/logger.js'
 
 const app = express()
 const PORT = 3000
 app.use(logger)
+app.use('/recipe', express.static('public/recipe'))
+app.use(express.static('public'))
 
 app.get('/', (request, response) => {
     response.send('Welcome to my 🍪 Cookieshop!')
