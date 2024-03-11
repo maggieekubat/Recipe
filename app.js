@@ -10,6 +10,15 @@ app.use(express.static('public'))
 // Make a List here with recipes so that a user can
 // look up mushroom rice without typing the .html
 
+// Also maybe do another recipe so that its not just a list of one recipe
+
+const recipes = {}
+
+recipes[mushroom_rice] = ["mushroom rice", "mushroomrice", "mushroom-rice", ]
+recipes[gnocchi_bake] = ["gnocchi bake", "gnocchibake", "gnocchi-bake", ]
+
+
+
 app.get('/', (request, response) => {
     response.send('Welcome to my 🍪 Cookieshop!')
 })
