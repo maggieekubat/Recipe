@@ -150,3 +150,12 @@ form {
         color: rgb(212, 247, 38);
     }
 }
+
+/*index.ejs*/
+
+.text3000 {
+    padding-left: 2rem;
+}
+.here {
+    color: beige;
+}
