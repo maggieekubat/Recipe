@@ -1,4 +1,5 @@
 import express from 'express'
+import mongoose  from 'mongoose'
 import { logger } from './middlewares/logger.js'
 
 //import { json } from './data.json'
@@ -18,7 +19,7 @@ const recipes = {
     ]
 
 }
-const recipeNumber = {
+const recipeNumber = {  
     numberOfRecipes: Object.keys(recipes).length
 }
 
@@ -30,6 +31,9 @@ app.use('/recipe', express.static('public/recipe'))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
+mongoose.connect('mongodb+srv://maggiekubat:QxGhYUeQbDybrKgD@recipeproject.2mteths.mongodb.net/?retryWrites=true&w=majority&appName=recipeProject')
+    .then(() => console.log('Database connected'))
+    .catch(error => console.error(error))
 
 app.get('/', (request, response) => {
     response.render('index', recipeNumber)
