@@ -47,7 +47,7 @@ app.get('/admin', (request, response) => {
     response.render('admin_login')
 })
 
-app.post('/admin', (response, request) => {
+app.post('/admin', (request, response) => {
     console.log('log in credentials:', request.body)
     response.send('You are now in admin mode')
 })
@@ -70,16 +70,20 @@ app.get('/recipe', (request, response) => {
 })
 app.get('/recipe/:slug', (request, response) => {
     const recipeId = request.params.slug
+
     for (const [key, value] of Object.entries(recipes)){
         for (const slugName of value) {
+            console.log(slugName);
             if (recipeId === slugName && key === "mushroom_rice") {
-                response.render("mushroom_rice")
+                return response.render("mushroom_rice")
             } else if (recipeId === slugName && key === "gnocchi_bake"){
-                response.render("gnocchi_bake")
+                console.log(recipeId)
+                return response.render("gnocchi_bake")
             }
         }
-        response.send(`A recipe with the name '${recipeId}' could not be found`)
+
     }
+    return response.send(`A recipe with the name '${recipeId}' could not be found`)
 })
 
 app.listen(PORT, () => {
