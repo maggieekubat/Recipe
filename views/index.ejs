@@ -1,24 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    <link rel="stylesheet" href="reset.css">
-    <link rel="stylesheet" href="main.css">
-</head>
+<%- include('includes/head', {title: 'Index'}) %>
 <body>
-    <nav>
-        <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li class="admin_nav"><a href="/admin_login.html">Admin</a></li> 
-        </ul>
-    </nav>
 
     <h1 class="heading">Welcome to Maggie's Recipe Project Website</h1>
-    <% const recipeNumber = 2 %>
-    <p class="text3000">We currently have <%=recipeNumber %> recipes on the website</p>
+    
+    <p class="text3000">We currently have <%=numberOfRecipes %> recipes on the website</p>
     <p class="text3000">Contact us <a class="here" href="about.html">here</a> to add a recipe to the website</p>
+
+    <script type="text/javascript" src="app.js"></script> 
 </body>
 </html>

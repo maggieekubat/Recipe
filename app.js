@@ -18,6 +18,9 @@ const recipes = {
     ]
 
 }
+const recipeNumber = {
+    numberOfRecipes: Object.keys(recipes).length
+}
 
 const app = express()
 app.set('view engine', 'ejs')
@@ -29,19 +32,42 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.get('/', (request, response) => {
-    response.render('index')
+    response.render('index', recipeNumber)
 })
 
-app.get('/product', (request, response) => {
-    response.send(`The product name is ${data.title}`)
+app.get('/home', (request, response) => {
+    response.render("home")
 })
+
+app.get('/about', (request, response) => {
+    response.render('about')
+})
+
+app.get('/admin', (request, response) => {
+    response.render('admin_login')
+})
+
+app.post('/admin', (response, request) => {
+    console.log('log in credentials:', request.body)
+    response.send('You are now in admin mode')
+})
+
+app.get('/contact', (request, response) => {
+    response.render('contact')
+})
+
+// app.get('/product', (request, response) => {
+//     response.send(`The product name is ${data.title}`)
+// })
 
 app.post('/contact', (request, response) => {
     console.log('contact form submission', request.body)
     response.send('Thanks for your message. We will be in touch soon')
 })
 
-
+app.get('/recipe', (request, response) => {
+    response.render('recipe/index')
+})
 app.get('/recipe/:slug', (request, response) => {
     const recipeId = request.params.slug
     for (const [key, value] of Object.entries(recipes)){
@@ -52,10 +78,8 @@ app.get('/recipe/:slug', (request, response) => {
                 response.render("gnocchi_bake")
             }
         }
-
+        response.send(`A recipe with the name '${recipeId}' could not be found`)
     }
-
-    //response.send(`A recipe with the name '${recipeId}' could not be found`)
 })
 
 app.listen(PORT, () => {
