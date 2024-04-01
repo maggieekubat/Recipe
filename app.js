@@ -6,6 +6,19 @@ import { logger } from './middlewares/logger.js'
 //const data = json
 //const data = require('./data.json')
 
+const recipeSchema = new mongoose.Schema({
+    slug: { type: String, unique: true, required: true },
+    name: { type: String, required: true },
+    isOnline: { type: Boolean, default: true, required: true }
+})
+
+const Recipe = mongoose.model('RecipeList', recipeSchema)
+
+// const recipeList = [
+//     { name: 'Mushroom Rice', slug: 'mushroom-rice', isOnline: true},
+//     { name: 'Gnocchi Bake', slug: 'gnocchi-bake', isOnline: true}
+// ]
+
 const recipes = {
     mushroom_rice : [
         "mushroom rice",
@@ -70,14 +83,19 @@ app.post('/contact', (request, response) => {
 })
 
 app.get('/recipe', (request, response) => {
-    response.render('recipe/index')
+    response.render('recipe/index'/*, {recipeList: recipeList}*/)
 })
+
+app.get('/recipe/new', (request, response) => {
+    response.render('recipe/new')
+})
+
 app.get('/recipe/:slug', (request, response) => {
     const recipeId = request.params.slug
 
     for (const [key, value] of Object.entries(recipes)){
         for (const slugName of value) {
-            console.log(slugName);
+            //console.log(slugName);
             if (recipeId === slugName && key === "mushroom_rice") {
                 return response.render("mushroom_rice")
             } else if (recipeId === slugName && key === "gnocchi_bake"){
@@ -89,6 +107,23 @@ app.get('/recipe/:slug', (request, response) => {
     }
     return response.send(`A recipe with the name '${recipeId}' could not be found`)
 })
+
+app.post('/recipe', async (request, response) => {
+    try {
+        const recipe = new Recipe({
+            slug: request.body.slug,
+            name: request.body.name
+        })
+        await recipe.save()
+
+        response.send('Recipe Created')
+    }catch (error) {
+        console.error(error)
+        response.send('Error: The recipe could not be created, a recipe with this name may exist already')
+    }
+})
+
+
 
 app.listen(PORT, () => {
     console.log(`Started server on port ${PORT}`)
