@@ -8,7 +8,17 @@
 <body>
 
     <h1 class="heading">Current Recipes:</h1>
-
+    <ul>
+        <% recipes.forEach(recipe => { %>
+        <li>
+            <% if(recipe.isOnline) { %>
+                <a href="/recipe/<%= recipe.slug %>"><%= recipe.name %></a>
+            <% } else { %>
+                <%= recipe.name %> [NOT ONLINE]
+            <% } %>
+        </li>
+        <% }) %>
+    </ul>
     
 </body>
 </html>

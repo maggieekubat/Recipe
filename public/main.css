@@ -5,6 +5,13 @@ html {
     color: white;
 }
 
+a {
+    color: white;
+    text-shadow: rgb(237, 104, 110) 1px 0 10px;
+    /* text-shadow: rgb(210, 164, 164); */
+    padding-left: 2rem;
+}
+
 /* NAVIGATION BAR*/
 nav {
     /*position: sticky;

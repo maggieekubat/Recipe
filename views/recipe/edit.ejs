@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../includes/head', {title: 'Edit Recipe'}) %>
+<head>
+    <link rel="stylesheet" href="../reset.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+    <h2 class="heading">Edit a Recipe</h2>
+
+    <form action="/recipe/<%=recipe.slug %>" method="post">
+        <input type="text" value="<%= recipe.name %>" name="name" placeholder="name" required> <br>
+        <input type="text" value="<%= recipe.slug %>" name="slug" placeholder="slug" required> <br>
+        <button>Save</button>
+    </form>
+</body>
+</html>
