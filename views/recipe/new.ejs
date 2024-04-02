@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('../includes/head', {title: 'New Recipe'}) %>
-<head>
-    <link rel="stylesheet" href="../reset.css">
-    <link rel="stylesheet" href="../main.css">
-</head>
 <body>
     <h2 class="heading">Create a new recipe</h2>
 
     <form action="/recipe" method="post">
         <input type="text" name="name" placeholder="name" required> <br>
         <input type="text" name="slug" placeholder="slug" required> <br>
+        <input type="text" name="description" placeholder="description" required> <br>
         <button>Save</button>
     </form>
 </body>

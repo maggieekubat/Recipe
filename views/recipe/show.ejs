@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('../includes/head', {title: 'Recipes'}) %>
-<head>
-    <link rel="stylesheet" href="../reset.css">
-    <link rel="stylesheet" href="../main.css">
-</head>
 <body>
     <h1><%= recipe.name %></h1>
-    <!-- <p><%= recipe.description %></p> -->
+    <p><%= recipe.description %></p> 
 
     <% if (recipe.isOnline) { %>
         <p style="color: green;" >Recipe Online</p>

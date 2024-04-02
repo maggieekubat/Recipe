@@ -5,15 +5,11 @@ import { logger } from './middlewares/logger.js'
 const recipeSchema = new mongoose.Schema({
     slug: { type: String, unique: true, required: true },
     name: { type: String, required: true },
+    description: {type : String},
     isOnline: { type: Boolean, default: true, required: true }
 })
 
 const Recipe = mongoose.model('recipe', recipeSchema)
-
-// const recipeList = [
-//     { name: 'Mushroom Rice', slug: 'mushroom-rice', isOnline: true},
-//     { name: 'Gnocchi Bake', slug: 'gnocchi-bake', isOnline: true}
-// ]
 
 const recipeSlug = {
     mushroom_rice : [
@@ -69,10 +65,6 @@ app.get('/contact', (request, response) => {
     response.render('contact')
 })
 
-// app.get('/product', (request, response) => {
-//     response.send(`The product name is ${data.title}`)
-// })
-
 app.post('/contact', (request, response) => {
     console.log('contact form submission', request.body)
     response.send('Thanks for your message. We will be in touch soon')
@@ -99,8 +91,18 @@ app.get('/recipe/new', (request, response) => {
 
 
 app.get('/recipe/:slug', async (request, response) => {
+    const recipeId = request.params.slug
+
+    for (const [key, value] of Object.entries(recipeSlug)){
+        for (const slugName of value) {
+            if (recipeId === slugName && key === "mushroom_rice") {
+                return response.render("mushroom_rice")
+            } else if (recipeId === slugName && key === "gnocchi_bake"){
+                return response.render("gnocchi_bake")
+            }
+        }
+    }
     try {
-        const recipeId = request.params.slug
         const recipe = await Recipe.findOne({ slug: recipeId}).exec()
         
         response.render('recipe/show', {
@@ -113,27 +115,12 @@ app.get('/recipe/:slug', async (request, response) => {
     }
 })
 
-app.get('/recipe/:slug', async (request, response) => {
-    const recipeId = request.params.slug
-
-    for (const [key, value] of Object.entries(recipeSlug)){
-        for (const slugName of value) {
-            //console.log(slugName);
-            if (recipeId === slugName && key === "mushroom_rice") {
-                return response.render("mushroom_rice")
-            } else if (recipeId === slugName && key === "gnocchi_bake"){
-                //console.log(recipeId)
-                return response.render("gnocchi_bake")
-            }
-        }
-    }
-    return response.send(`A recipe with the name '${recipeId}' could not be found`)
-})
 
 app.get('/recipe/:slug/edit', async (request, response) => {
     try {
         const recipeId = request.params.slug
         const recipe = await Recipe.findOne({ slug: recipeId}).exec()
+        if(!recipe) throw new Error('Recipe not found')
 
         response.render('recipe/edit', {
             recipe: recipe
@@ -164,7 +151,8 @@ app.post('/recipe', async (request, response) => {
     try {
         const recipe = new Recipe({
             slug: request.body.slug,
-            name: request.body.name
+            name: request.body.name,
+            description: request.body.description
         })
         await recipe.save()
 
@@ -175,9 +163,9 @@ app.post('/recipe', async (request, response) => {
     }
 })
 
-app.get('/cookies/:slug/delete', async (request, response) => {
+app.get('/recipe/:slug/delete', async (request, response) => {
     try {
-        await Cookie.findOneAndDelete({ slug: request.params.slug })
+        await Recipe.findOneAndDelete({ slug: request.params.slug })
 
         response.redirect('/recipe')
     } catch (error) {
