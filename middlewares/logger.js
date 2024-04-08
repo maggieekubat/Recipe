@@ -9,3 +9,15 @@ export const logger = (request, response, next) => {
     next()
 }
 
+export const recipeSlug = {
+    mushroom_rice : [
+        "mushroom rice",
+        "mushroomrice",
+        "mushroom-rice"
+    ],
+    gnocchi_bake : [
+        "gnocchi bake", 
+        "gnocchibake",
+        "gnocchi-bake"
+    ]
+}

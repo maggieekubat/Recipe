@@ -1,6 +1,6 @@
 import express from 'express'
 import mongoose  from 'mongoose'
-import { logger } from './middlewares/logger.js'
+import { logger, recipeSlug } from './middlewares/logger.js'
 import "dotenv/config"
 
 const recipeSchema = new mongoose.Schema({
@@ -12,18 +12,7 @@ const recipeSchema = new mongoose.Schema({
 
 const Recipe = mongoose.model('recipe', recipeSchema)
 
-const recipeSlug = {
-    mushroom_rice : [
-        "mushroom rice",
-        "mushroomrice",
-        "mushroom-rice"
-    ],
-    gnocchi_bake : [
-        "gnocchi bake", 
-        "gnocchibake",
-        "gnocchi-bake"
-    ]
-}
+
 
 const recipeNumber = {  
     numberOfRecipes: Object.keys(recipeSlug).length
@@ -57,10 +46,10 @@ app.get('/admin', (request, response) => {
     response.render('admin_login')
 })
 
-app.post('/admin', (request, response) => {
-    console.log('log in credentials:', request.body)
-    response.send('You are now in admin mode')
-})
+// app.post('/admin', (request, response) => {
+//     console.log('log in credentials:', request.body)
+
+// })
 
 app.get('/contact', (request, response) => {
     response.render('contact')

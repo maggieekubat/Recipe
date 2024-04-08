@@ -6,8 +6,13 @@
     <h1 class="heading">Welcome to Maggie's Recipe Project Website</h1>
     
     <p class="text3000">We currently have <%=numberOfRecipes %> recipes on the website</p>
-    <p class="text3000">Contact us <a class="here" href="recipe/new">here</a> to add a recipe to the website</p>
+    <!-- <p class="text3000">Contact us <a class="here" href="recipe/new">here</a> to add a recipe to the website</p> -->
 
-    <script type="text/javascript" src="app.js"></script> 
+    <script type="text/javascript" src="login-page.js">
+        if (loggedIn === true) {
+            console.log("hello world")
+        } 
+    </script> 
 </body>
+<script src="/login-page.js"></script>
 </html>

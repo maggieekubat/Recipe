@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('includes/head', {title: 'Admin Login'}) %>
+    <%- include('includes/head', {title: 'Admin'}) %>
 <body>
 
     <h1 class="heading admin-heading">Admin Login</h1>
 
-    <form action="/admin" method="post" class="form">
+    <div id="login-error-msg-holder">
+        <p id="login-error-msg">Invalid username<span id="error-msg-second-line"> and/or password</span></p>
+    </div>
+
+    <form action="/admin" method="post" class="form" id="login-form">
         <label class="label" for="username">Username</label>
-        <input class="input" type="username">
+        <input class="input" type="username" name="username" required>
         <br> 
         <label class="label" for="password">Password</label>
-        <input class="input" type="password">
+        <input class="input" type="password" name="password" required>
         <br>
-        <input class="button" type="submit" value="Submit">
+        <button class="button" type="submit" value="Submit" id="login-form-submit">submit</button>
     </form>
 </body>
+<script src="/login-page.js"></script>
+
 </html>
