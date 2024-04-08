@@ -141,7 +141,7 @@ app.post('/recipe/:slug', async (request, response) => {
             { new: true }
         )
         
-        response.redirect(`/recipe/$(recipe.slug)`)
+        response.redirect(`/recipe/${recipe.slug}`)
     } catch (error) {
         console.error(error)
         response.send('Error: the recipe could not be created.')
