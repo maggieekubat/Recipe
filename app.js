@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose  from 'mongoose'
 import { logger } from './middlewares/logger.js'
+import "dotenv/config"
 
 const recipeSchema = new mongoose.Schema({
     slug: { type: String, unique: true, required: true },
@@ -36,7 +37,7 @@ app.use('/recipe', express.static('public/recipe'))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
-mongoose.connect('mongodb+srv://maggiekubat:QxGhYUeQbDybrKgD@recipeproject.2mteths.mongodb.net/?retryWrites=true&w=majority&appName=recipeProject')
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Database connected'))
     .catch(error => console.error(error))
 
