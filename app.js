@@ -3,6 +3,7 @@ import mongoose  from 'mongoose'
 import { logger, recipeSlug } from './middlewares/logger.js'
 import "dotenv/config"
 
+// Need to move these to a seperate model directory, need two more, 3 in total
 const recipeSchema = new mongoose.Schema({
     slug: { type: String, unique: true, required: true },
     name: { type: String, required: true },
@@ -12,11 +13,6 @@ const recipeSchema = new mongoose.Schema({
 
 const Recipe = mongoose.model('recipe', recipeSchema)
 
-
-
-const recipeNumber = {  
-    numberOfRecipes: Object.keys(recipeSlug).length
-}
 
 const app = express()
 app.set('view engine', 'ejs')
@@ -31,7 +27,10 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(error => console.error(error))
 
 app.get('/', (request, response) => {
-    response.render('index', recipeNumber)
+    const recipeNumber = {  
+        numberOfRecipes: Object.keys(recipeSlug).length
+    }
+    response.render('home', recipeNumber)
 })
 
 app.get('/home', (request, response) => {
@@ -60,6 +59,7 @@ app.post('/contact', (request, response) => {
     response.send('Thanks for your message. We will be in touch soon')
 })
 
+// recipe => recipes
 app.get('/recipe', async (request, response) => {
     try {
         const recipes = await Recipe.find({ isOnline: true }).exec()
