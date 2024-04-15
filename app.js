@@ -33,9 +33,9 @@ app.get('/', (request, response) => {
     response.render('home', recipeNumber)
 })
 
-app.get('/home', (request, response) => {
-    response.render("home")
-})
+// app.get('/home', (request, response) => {
+//     response.render("home")
+// })
 
 app.get('/about', (request, response) => {
     response.render('about')
