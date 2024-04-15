@@ -18,7 +18,6 @@ const app = express()
 app.set('view engine', 'ejs')
 const PORT = 3000
 app.use(logger)
-app.use('/recipe', express.static('public/recipe'))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
@@ -33,9 +32,6 @@ app.get('/', (request, response) => {
     response.render('home', recipeNumber)
 })
 
-// app.get('/home', (request, response) => {
-//     response.render("home")
-// })
 
 app.get('/about', (request, response) => {
     response.render('about')
@@ -60,27 +56,28 @@ app.post('/contact', (request, response) => {
 })
 
 // recipe => recipes
-app.get('/recipe', async (request, response) => {
+app.get('/recipes', async (request, response) => {
     try {
         const recipes = await Recipe.find({ isOnline: true }).exec()
 
-        response.render('recipe/index', {
+        response.render('recipes/index', {
             recipes: recipes
         })
     } catch (error) {
         console.log(error)
-        response.render('recipe/index', {
+        response.render('recipes/index', {
             recipe: []
         })
     } 
 })
 
-app.get('/recipe/new', (request, response) => {
-    response.render('recipe/new')
+app.get('/recipes/new', (request, response) => {
+    console.log("test")
+    response.render('recipes/new')
 })
 
 
-app.get('/recipe/:slug', async (request, response) => {
+app.get('/recipes/:slug', async (request, response) => {
     const recipeId = request.params.slug
 
     for (const [key, value] of Object.entries(recipeSlug)){
@@ -95,7 +92,7 @@ app.get('/recipe/:slug', async (request, response) => {
     try {
         const recipe = await Recipe.findOne({ slug: recipeId}).exec()
         
-        response.render('recipe/show', {
+        response.render('recipes/show', {
             recipe: recipe
         })
         console.log(recipe)
@@ -106,13 +103,13 @@ app.get('/recipe/:slug', async (request, response) => {
 })
 
 
-app.get('/recipe/:slug/edit', async (request, response) => {
+app.get('/recipes/:slug/edit', async (request, response) => {
     try {
         const recipeId = request.params.slug
         const recipe = await Recipe.findOne({ slug: recipeId}).exec()
         if(!recipe) throw new Error('Recipe not found')
 
-        response.render('recipe/edit', {
+        response.render('recipes/edit', {
             recipe: recipe
         })
         console.log(recipe)
@@ -122,7 +119,7 @@ app.get('/recipe/:slug/edit', async (request, response) => {
     }
 })
 
-app.post('/recipe/:slug', async (request, response) => {
+app.post('/recipes/:slug', async (request, response) => {
     try {
         const recipe = await Recipe.findOneAndUpdate(
             { slug: request.params.slug },
@@ -130,14 +127,14 @@ app.post('/recipe/:slug', async (request, response) => {
             { new: true }
         )
         
-        response.redirect(`/recipe/${recipe.slug}`)
+        response.redirect(`/recipes/${recipe.slug}`)
     } catch (error) {
         console.error(error)
         response.send('Error: the recipe could not be created.')
     }
 })
 
-app.post('/recipe', async (request, response) => {
+app.post('/recipes', async (request, response) => {
     try {
         const recipe = new Recipe({
             slug: request.body.slug,
@@ -153,11 +150,11 @@ app.post('/recipe', async (request, response) => {
     }
 })
 
-app.get('/recipe/:slug/delete', async (request, response) => {
+app.get('/recipes/:slug/delete', async (request, response) => {
     try {
         await Recipe.findOneAndDelete({ slug: request.params.slug })
 
-        response.redirect('/recipe')
+        response.redirect('/recipes')
     } catch (error) {
         console.error(error)
         response.send('Error: No recipe was deleted')

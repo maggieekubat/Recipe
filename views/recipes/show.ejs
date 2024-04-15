@@ -10,5 +10,8 @@
     <% } else { %>
         <p style="color: tomato;" >Temporarily Offline</p>
     <% } %>
+
+    <p> <a href="/recipes/<%= recipe.slug %>/edit">Click here</a> to edit the recipe</p>
+    <p> <a href="/recipes/<%= recipe.slug %>/delete">Click here</a> to delete the recipe</p>
 </body>
 </html>
