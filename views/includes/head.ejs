@@ -10,7 +10,10 @@
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li class="admin_nav"><a href="/admin">Admin</a></li> 
+            <li class="admin_nav"><a href="/admin">Admin</a></li>
+            <li class="admin_nav">
+                <button onClick="localStorage.removeItem('loggedIn')">Logout</button>
+              </li> 
         </ul>
     </nav>
 </head>

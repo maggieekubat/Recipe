@@ -92,3 +92,6 @@
 
 // recipes[mushroom_rice.html] = ["mushroom rice", "mushroomrice", "mushroom-rice", ]
 // recipes[gnocchi_bake.html] = ["gnocchi bake", "gnocchibake", "gnocchi-bake", ]
+
+//<!-- Font Awesome Icons Link -->
+//<!--<script src="https://kit.fontawesome.com/25a047c680.js" crossorigin="anonymous"></script> -->

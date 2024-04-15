@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('../includes/head', {title: 'Recipes'}) %>
-<body>
+  <%- include('../includes/head', {title: 'Recipes'}) %>
+  <body>
     <h1><%= recipe.name %></h1>
-    <p><%= recipe.description %></p> 
+    <p><%= recipe.description %></p>
 
     <% if (recipe.isOnline) { %>
-        <p style="color: green;" >Recipe Online</p>
+    <p style="color: green">Recipe Online</p>
     <% } else { %>
-        <p style="color: tomato;" >Temporarily Offline</p>
+    <p style="color: tomato">Temporarily Offline</p>
     <% } %>
 
-    <p> <a href="/recipes/<%= recipe.slug %>/edit">Click here</a> to edit the recipe</p>
-    <p> <a href="/recipes/<%= recipe.slug %>/delete">Click here</a> to delete the recipe</p>
-</body>
+    <div requires-authentication>
+      <p>
+        <a href="/recipes/<%= recipe.slug %>/edit">Click here</a> to edit the recipe
+      </p>
+      <p>
+        <a href="/recipes/<%= recipe.slug %>/delete">Click here</a> to delete the recipe
+      </p>
+    </div>
+    <div requires-no-authentication onClick="alert('no access')"></div>
+  </body>
+
+  <script src="/auth.js"></script>
 </html>

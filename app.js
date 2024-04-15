@@ -3,16 +3,27 @@ import mongoose  from 'mongoose'
 import { logger, recipeSlug } from './middlewares/logger.js'
 import "dotenv/config"
 
-// Need to move these to a seperate model directory, need two more, 3 in total
+const ingredientSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    quantity: { type: Number, required: true },
+    unit: { type: String, required: true }
+})
+
 const recipeSchema = new mongoose.Schema({
     slug: { type: String, unique: true, required: true },
     name: { type: String, required: true },
     description: {type : String},
-    isOnline: { type: Boolean, default: true, required: true }
+    isOnline: { type: Boolean, default: true, required: true },
+    ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }]
 })
 
 const Recipe = mongoose.model('recipe', recipeSchema)
+const Ingredient = mongoose.model('ingredient', ingredientSchema)
 
+async function setup() {
+    let salt = await Ingredient.create({ name: 'Salt', quantity: 1.5, unit: 'tsp' });
+    let sugar = await Ingredient.create({ name: 'Sugar', quantity: 2, unit: 'tbsp' });
+}
 
 const app = express()
 app.set('view engine', 'ejs')
@@ -22,7 +33,7 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Database connected'))
+    .then(() => {console.log('Database connected'); setup();})
     .catch(error => console.error(error))
 
 app.get('/', (request, response) => {
@@ -55,7 +66,6 @@ app.post('/contact', (request, response) => {
     response.send('Thanks for your message. We will be in touch soon')
 })
 
-// recipe => recipes
 app.get('/recipes', async (request, response) => {
     try {
         const recipes = await Recipe.find({ isOnline: true }).exec()
@@ -135,18 +145,23 @@ app.post('/recipes/:slug', async (request, response) => {
 })
 
 app.post('/recipes', async (request, response) => {
+
+    const salt = await Ingredient.findOne({ name: "Salt"}).exec()
+
+    console.log("salt found", salt)
     try {
         const recipe = new Recipe({
             slug: request.body.slug,
             name: request.body.name,
-            description: request.body.description
+            description: request.body.description,
+            ingredients: [salt._id]
         })
         await recipe.save()
 
         response.send('Recipe Created')
     }catch (error) {
         console.error(error)
-        response.send('Error: The recipe could not be created, a recipe with this name may exist already')
+        response.send('Error: ' + error.message)
     }
 })
 

@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('includes/head', {title: 'Home'}) %>
-<body>
-    
-    <h1 class="heading home-heading">Welcome to Maggie's Recipe Project Website</h1>
-    
+  <%- include('includes/head', {title: 'Home'}) %>
+  <body>
+    <h1 class="heading home-heading">
+      Welcome to Maggie's Recipe Project Website
+    </h1>
+
     <!-- <p class="text3000">We currently have <%=numberOfRecipes %> recipes on the website</p> -->
     <!-- <ul>
         <li><a class="recipe-list" href="/recipe/mushroom-rice">Mushroom Rice</a> </li>
         <li><a class="recipe-list" href="/recipe/gnocchi-bake">Gnocchi bake</a> </li>
     </ul> -->
 
-    <br>
-    <h2> <a href="/recipes">Existing recipes</a></h2>
+    <br />
+    <h2><a href="/recipes">Existing recipes</a></h2>
 
-    <p> <a href="/recipes/new">Click here</a> to make a new recipe</p>
-</body>
-<!-- Font Awesome Icons Link -->
-<!--<script src="https://kit.fontawesome.com/25a047c680.js" crossorigin="anonymous"></script> -->
+    <div requires-authentication>
+      <p><a href="/recipes/new">Click here</a> to make a new recipe</p>
+    </div>
+    <div requires-no-authentication onClick="alert('no access')"></div>
+  </body>
+
+  <script src="/auth.js"></script>
 </html>
