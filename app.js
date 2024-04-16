@@ -14,8 +14,7 @@ const recipeSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: {type : String},
     isOnline: { type: Boolean, default: true, required: true },
-    ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }],
-    // instructions: {type : String}
+    ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }]
 })
 
 const Recipe = mongoose.model('recipe', recipeSchema)
@@ -40,7 +39,6 @@ app.get('/', (request, response) => {
     response.render('home', recipeNumber)
 })
 
-
 app.get('/about', (request, response) => {
     response.render('about')
 })
@@ -58,6 +56,8 @@ app.post('/contact', (request, response) => {
     response.send('Thanks for your message. We will be in touch soon')
 })
 
+
+
 app.get('/recipes', async (request, response) => {
     try {
         const recipes = await Recipe.find({ isOnline: true }).exec()
@@ -72,6 +72,29 @@ app.get('/recipes', async (request, response) => {
         })
     } 
 })
+
+app.post('/recipes', async (request, response) => {
+
+    const ingredients = await Ingredient.find({ name: {$in: request.body.ingredients}}).exec()
+
+    const ingredientIds = ingredients.map(i=> i._id)
+
+    try {
+        const recipe = new Recipe({
+            slug: request.body.slug,
+            name: request.body.name,
+            description: request.body.description,
+            ingredients: ingredientIds,
+        })
+        await recipe.save()
+
+        response.send('Recipe Created')
+    }catch (error) {
+        console.error(error)
+        response.send('Error: ' + error.message)
+    }
+})
+
 
 app.get('/recipes/new', (request, response) => {
     console.log("test")
@@ -105,23 +128,6 @@ app.get('/recipes/:slug', async (request, response) => {
     }
 })
 
-
-app.get('/recipes/:slug/edit', async (request, response) => {
-    try {
-        const recipeId = request.params.slug
-        const recipe = await Recipe.findOne({ slug: recipeId}).exec()
-        if(!recipe) throw new Error('Recipe not found')
-
-        response.render('recipes/edit', {
-            recipe: recipe
-        })
-        console.log(recipe)
-    } catch(error) {
-        console.error(error)
-        console.log('that did not work')
-    }
-})
-
 app.post('/recipes/:slug', async (request, response) => {
     console.log("endpoint hit")
     try {
@@ -138,29 +144,19 @@ app.post('/recipes/:slug', async (request, response) => {
     }
 })
 
-app.post('/recipes', async (request, response) => {
-
-    // select all the ingredients where the "name" is included in the request.body.ingredients array
-    const ingredients = await Ingredient.find({ name: {$in: request.body.ingredients}}).exec()
-
-    const ingredientIds = ingredients.map(i=> i._id)
-
-   // console.log("ingredients_", request.body.ingredients, ingredients, ingredientIds)
-
+app.get('/recipes/:slug/edit', async (request, response) => {
     try {
-        const recipe = new Recipe({
-            slug: request.body.slug,
-            name: request.body.name,
-            description: request.body.description,
-            ingredients: ingredientIds,
-            // instructions: request.body.instructions
-        })
-        await recipe.save()
+        const recipeId = request.params.slug
+        const recipe = await Recipe.findOne({ slug: recipeId}).exec()
+        if(!recipe) throw new Error('Recipe not found')
 
-        response.send('Recipe Created')
-    }catch (error) {
+        response.render('recipes/edit', {
+            recipe: recipe
+        })
+        console.log(recipe)
+    } catch(error) {
         console.error(error)
-        response.send('Error: ' + error.message)
+        console.log('that did not work')
     }
 })
 
