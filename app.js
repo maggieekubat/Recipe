@@ -14,16 +14,13 @@ const recipeSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: {type : String},
     isOnline: { type: Boolean, default: true, required: true },
-    ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }]
+    ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }],
+    // instructions: {type : String}
 })
 
 const Recipe = mongoose.model('recipe', recipeSchema)
 const Ingredient = mongoose.model('ingredient', ingredientSchema)
 
-async function setup() {
-    let salt = await Ingredient.create({ name: 'Salt', quantity: 1.5, unit: 'tsp' });
-    let sugar = await Ingredient.create({ name: 'Sugar', quantity: 2, unit: 'tbsp' });
-}
 
 const app = express()
 app.set('view engine', 'ejs')
@@ -33,7 +30,7 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => {console.log('Database connected'); setup();})
+    .then(() => console.log('Database connected'))
     .catch(error => console.error(error))
 
 app.get('/', (request, response) => {
@@ -51,11 +48,6 @@ app.get('/about', (request, response) => {
 app.get('/admin', (request, response) => {
     response.render('admin_login')
 })
-
-// app.post('/admin', (request, response) => {
-//     console.log('log in credentials:', request.body)
-
-// })
 
 app.get('/contact', (request, response) => {
     response.render('contact')
@@ -100,6 +92,7 @@ app.get('/recipes/:slug', async (request, response) => {
         }
     }
     try {
+        console.log("recipeId:", recipeId)
         const recipe = await Recipe.findOne({ slug: recipeId}).exec()
         
         response.render('recipes/show', {
@@ -130,6 +123,7 @@ app.get('/recipes/:slug/edit', async (request, response) => {
 })
 
 app.post('/recipes/:slug', async (request, response) => {
+    console.log("endpoint hit")
     try {
         const recipe = await Recipe.findOneAndUpdate(
             { slug: request.params.slug },
@@ -140,21 +134,26 @@ app.post('/recipes/:slug', async (request, response) => {
         response.redirect(`/recipes/${recipe.slug}`)
     } catch (error) {
         console.error(error)
-        response.send('Error: the recipe could not be created.')
+        response.send('Error at /recipes/:slug:', error.message)
     }
 })
 
 app.post('/recipes', async (request, response) => {
 
-    const salt = await Ingredient.findOne({ name: "Salt"}).exec()
+    // select all the ingredients where the "name" is included in the request.body.ingredients array
+    const ingredients = await Ingredient.find({ name: {$in: request.body.ingredients}}).exec()
 
-    console.log("salt found", salt)
+    const ingredientIds = ingredients.map(i=> i._id)
+
+   // console.log("ingredients_", request.body.ingredients, ingredients, ingredientIds)
+
     try {
         const recipe = new Recipe({
             slug: request.body.slug,
             name: request.body.name,
             description: request.body.description,
-            ingredients: [salt._id]
+            ingredients: ingredientIds,
+            // instructions: request.body.instructions
         })
         await recipe.save()
 
