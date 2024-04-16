@@ -20,13 +20,15 @@ const Recipe = mongoose.model('recipe', recipeSchema)
 const Ingredient = mongoose.model('ingredient', ingredientSchema)
 
 mongoose.connect(process.env.MONGODB_URI)
-    .then(seedDatabase)
+    .then(seedDatabase())
     .catch(error => console.error(error))
 
 async function seedDatabase() {
 
-    await Recipe.delete({});
-    await Ingredient.delete({});
+    console.log("run seedDatabase");
+    await Recipe.deleteMany({});
+    await Ingredient.deleteMany({});
+    console.log("finished deleting entries");
 
     // Ingredients
 
